@@ -30,13 +30,16 @@ export default function CreateProfilePage() {
 
             const { error: insertError } = await supabase
                 .from("profiles")
-                .insert({
-                    id: session.user.id,
-                    name,
-                    age: parseInt(age),
-                    training_style: trainingStyle,
-                    goal,
-                });
+                .upsert(
+                    {
+                        id: session.user.id,
+                        name,
+                        age: Number.parseInt(age, 10),
+                        training_style: trainingStyle,
+                        goal,
+                    },
+                    { onConflict: "id" }
+                );
 
             if (insertError) throw insertError;
 
