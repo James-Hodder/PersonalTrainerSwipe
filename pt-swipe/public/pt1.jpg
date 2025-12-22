@@ -1,0 +1,9 @@
+<svg width="400" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="600" fill="#3b82f6"/>
+  <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle" dominant-baseline="middle">
+    Personal Trainer 1
+  </text>
+  <text x="50%" y="60%" font-family="Arial, sans-serif" font-size="18" fill="white" text-anchor="middle" dominant-baseline="middle">
+    Alex - Strength Training
+  </text>
+</svg>

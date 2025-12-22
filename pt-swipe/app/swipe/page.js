@@ -1,4 +1,4 @@
-import SwipeDeck from "@/components/SwipeDeck";
+import SwipeDeck from "@/app/components/Swipedeck";
 
 const mockProfiles = [
     {
