@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
+import { saveLocalProfile } from "@/lib/localProfile";
 
 export default function CreateProfilePage() {
     const router = useRouter();
@@ -21,8 +22,16 @@ export default function CreateProfilePage() {
         const goal = formData.get("goal") as string;
 
         try {
+            const parsedAge = Number.parseInt(age, 10);
+
+            if (!isSupabaseConfigured) {
+                saveLocalProfile({ name, age: parsedAge, trainingStyle, goal });
+                router.push("/swipe");
+                return;
+            }
+
             const { data: { session } } = await supabase.auth.getSession();
-            
+
             if (!session) {
                 router.push("/auth");
                 return;
@@ -34,7 +43,7 @@ export default function CreateProfilePage() {
                     {
                         id: session.user.id,
                         name,
-                        age: Number.parseInt(age, 10),
+                        age: parsedAge,
                         training_style: trainingStyle,
                         goal,
                     },
@@ -55,12 +64,12 @@ export default function CreateProfilePage() {
         <div className="flex items-center justify-center min-h-screen p-4">
             <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-sm bg-zinc-900 p-6 rounded-xl space-y-4"
+                className="w-full max-w-sm bg-white text-gray-900 p-6 rounded-xl space-y-4 shadow-xl"
             >
                 <h1 className="text-2xl font-bold text-center">Create Your Profile</h1>
 
                 <div>
-                    <label htmlFor="name" className="block text-sm mb-1">
+                    <label htmlFor="name" className="block text-sm mb-1 text-gray-700">
                         Name
                     </label>
                     <input
@@ -68,12 +77,12 @@ export default function CreateProfilePage() {
                         id="name"
                         name="name"
                         required
-                        className="w-full p-3 rounded bg-zinc-800"
+                        className="w-full p-3 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="age" className="block text-sm mb-1">
+                    <label htmlFor="age" className="block text-sm mb-1 text-gray-700">
                         Age
                     </label>
                     <input
@@ -83,19 +92,19 @@ export default function CreateProfilePage() {
                         required
                         min="18"
                         max="100"
-                        className="w-full p-3 rounded bg-zinc-800"
+                        className="w-full p-3 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="trainingStyle" className="block text-sm mb-1">
+                    <label htmlFor="trainingStyle" className="block text-sm mb-1 text-gray-700">
                         Training Style
                     </label>
                     <select
                         id="trainingStyle"
                         name="trainingStyle"
                         required
-                        className="w-full p-3 rounded bg-zinc-800"
+                        className="w-full p-3 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                     >
                         <option value="">Select a style</option>
                         <option value="Strength">Strength</option>
@@ -107,14 +116,14 @@ export default function CreateProfilePage() {
                 </div>
 
                 <div>
-                    <label htmlFor="goal" className="block text-sm mb-1">
+                    <label htmlFor="goal" className="block text-sm mb-1 text-gray-700">
                         Fitness Goal
                     </label>
                     <select
                         id="goal"
                         name="goal"
                         required
-                        className="w-full p-3 rounded bg-zinc-800"
+                        className="w-full p-3 rounded bg-gray-100 text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                     >
                         <option value="">Select a goal</option>
                         <option value="Weight Loss">Weight Loss</option>

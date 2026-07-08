@@ -26,7 +26,7 @@ export default function AuthPage() {
         <div className="flex items-center justify-center min-h-screen p-4">
             <form
                 onSubmit={signIn}
-                className="w-full max-w-sm bg-zinc-900 p-6 rounded-xl space-y-4"
+                className="w-full max-w-sm bg-white text-gray-900 p-6 rounded-xl space-y-4 shadow-xl"
             >
                 <h1 className="text-2xl font-bold text-center">Welcome</h1>
 
@@ -34,7 +34,7 @@ export default function AuthPage() {
                     type="email"
                     required
                     placeholder="Email"
-                    className="w-full p-3 rounded bg-zinc-800"
+                    className="w-full p-3 rounded bg-gray-100 text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
@@ -44,7 +44,7 @@ export default function AuthPage() {
                 </button>
 
                 {status && (
-                    <p className="text-center text-sm text-zinc-400">{status}</p>
+                    <p className="text-center text-sm text-gray-500">{status}</p>
                 )}
             </form>
         </div>

@@ -1,20 +1,25 @@
 "use client";
 
-import { Auth, useSession } from "@supabase/auth-ui-react";
+import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function LoginPage() {
-    const session = useSession();
     const router = useRouter();
 
     useEffect(() => {
-        if (session) {
-            router.push("/swipe");
-        }
-    }, [session, router]);
+        supabase.auth.getSession().then(({ data }) => {
+            if (data.session) router.push("/swipe");
+        });
+
+        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+            if (session) router.push("/swipe");
+        });
+
+        return () => listener.subscription.unsubscribe();
+    }, [router]);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

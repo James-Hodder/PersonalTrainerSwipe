@@ -2,13 +2,20 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
+import { getLocalProfile } from "@/lib/localProfile";
 
 export default function Home() {
     const router = useRouter();
 
     useEffect(() => {
         async function check() {
+            if (!isSupabaseConfigured) {
+                const profile = getLocalProfile();
+                router.push(profile ? "/swipe" : "/create-profile");
+                return;
+            }
+
             const { data } = await supabase.auth.getSession();
 
             if (!data.session) {
@@ -22,17 +29,14 @@ export default function Home() {
                 .eq("id", data.session.user.id)
                 .single();
 
-            if (!profile) {
-                router.push("/create-profile");
-            }
+            router.push(profile ? "/swipe" : "/create-profile");
         }
 
         check();
     }, [router]);
 
     return (
-        <main className="p-4">
-            {/* Swipe cards component goes here */}
+        <main className="min-h-screen flex items-center justify-center p-4">
             <p>Loading...</p>
         </main>
     );
