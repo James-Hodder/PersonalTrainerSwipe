@@ -1,16 +1,15 @@
 {
-  "name": "PersonalTrainerSwipe",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
+  "name": "pt-swipe-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "build": "tsc"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.89.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.5.3"
-  },
-  "private": true
+    "dev": "npm run dev -w @pt-swipe/web",
+    "build": "npm run build -w @pt-swipe/web",
+    "start": "npm run start -w @pt-swipe/web",
+    "lint": "npm run lint -w @pt-swipe/web",
+    "typecheck": "npm run typecheck -w @pt-swipe/shared"
+  }
 }

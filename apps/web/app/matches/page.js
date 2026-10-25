@@ -6,8 +6,8 @@ import {
     subscribe,
     getMatchesSnapshot,
     getServerSnapshotMatches,
-    getTrainerById,
 } from "@/lib/matches";
+import { getTrainerById } from "@pt-swipe/shared";
 
 export default function MatchesPage() {
     const matches = useSyncExternalStore(

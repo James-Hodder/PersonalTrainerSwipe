@@ -6,7 +6,7 @@ import Link from "next/link";
 import SwipeDeck from "@/app/components/Swipedeck";
 import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
 import { getLocalProfile } from "@/lib/localProfile";
-import { mockTrainers, computeMatch } from "@/lib/trainers";
+import { mockTrainers, computeMatch } from "@pt-swipe/shared";
 
 export default function SwipePage() {
     const router = useRouter();

@@ -9,9 +9,8 @@ import {
     getServerSnapshotMessages,
     getMessages,
     saveMessages,
-    getTrainerById,
-    createMessage,
 } from "@/lib/matches";
+import { getTrainerById, createMessage } from "@pt-swipe/shared";
 import { getLocalProfile } from "@/lib/localProfile";
 
 const trainerReplies = [

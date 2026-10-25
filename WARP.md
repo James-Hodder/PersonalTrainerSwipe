@@ -4,15 +4,34 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-PersonalTrainerSwipe is a monorepo containing:
-1. **pt-swipe/** - Next.js 16 web application (React 19, TypeScript/JavaScript)
-2. **src/** - Standalone TypeScript utility/backend code (minimal, currently just a placeholder)
+PersonalTrainerSwipe is an npm workspaces monorepo:
 
-The main application is a Tinder-style swipe interface for matching client users with personal trainer users.
+```
+apps/
+  web/        @pt-swipe/web     Next.js 16 web app (React 19, TypeScript/JavaScript)
+  mobile/     (planned)         React Native / Expo app
+packages/
+  shared/     @pt-swipe/shared  Platform-agnostic types and logic used by every app
+```
+
+The product is a Tinder-style swipe interface for matching client users with personal trainer users.
+
+Always run `npm install` from the repo root — there is a single root `package-lock.json` and no per-app lockfiles.
 
 ## Architecture
 
-### pt-swipe (Main Application)
+### packages/shared
+
+Raw TypeScript (no build step) consumed directly by each app's bundler. Contains:
+- `profile.ts` - `UserProfile` type
+- `trainers.ts` - `Trainer` type, `mockTrainers`, `getTrainerById`, `computeMatch` scoring
+- `matches.ts` - `Match` / `ChatMessage` types, `createMessage`
+
+Rule: nothing in `shared` may touch `window`, the DOM, React Native APIs or storage. Platform-specific
+code (e.g. `localStorage` persistence) stays in the app. Apps import it as `@pt-swipe/shared`; the web
+app lists it in `transpilePackages` in `next.config.ts`.
+
+### apps/web (Web Application)
 
 **Tech Stack:**
 - Next.js 16 with App Router
@@ -29,9 +48,10 @@ The main application is a Tinder-style swipe interface for matching client users
   - `swipe/page.js` - Main swipe interface with mock data
   - `login/page.js` - Alternative login page using Supabase Auth UI (requires @supabase/auth-ui-react)
   - `components/` - React components (SwipeCard.js, Swipedeck.js)
-- `lib/` - Shared utilities
+- `lib/` - Web-only utilities
   - `supabaseClient.ts` - Supabase client initialization
   - `requireAuth.ts` - Server-side auth helper
+  - `localProfile.ts`, `matches.ts` - `localStorage` persistence for profile, matches and chats
 - `public/` - Static assets including pt1.jpg and pt2.jpg for mock trainer profiles
 
 **Authentication Flow:**
@@ -45,7 +65,7 @@ The main application is a Tinder-style swipe interface for matching client users
 - `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous key
 
-Create a `.env.local` file in the `pt-swipe/` directory with these values.
+Create a `.env.local` file in the `apps/web/` directory with these values.
 
 ### Swipe Component System
 
@@ -72,36 +92,22 @@ When creating new files, match the pattern of similar files in the same director
 
 ## Development Commands
 
-### pt-swipe (Next.js App)
-
-Navigate to `pt-swipe/` directory first:
+Run everything from the repo root:
 
 ```bash
-cd pt-swipe
+npm install          # Install all workspaces (single root lockfile)
+npm run dev          # Start the web dev server on http://localhost:3000
+npm run build        # Production build of the web app
+npm start            # Start the production web server
+npm run lint         # ESLint the web app (ESLint 9 flat config)
+npm run typecheck    # Type-check packages/shared
 ```
 
-**Development:**
-```bash
-npm run dev          # Start dev server on http://localhost:3000
-```
-
-**Build & Production:**
-```bash
-npm run build        # Build for production
-npm start            # Start production server
-```
-
-**Linting:**
-```bash
-npm run lint         # Run ESLint on all files (uses ESLint 9 flat config)
-```
-
-### Root Level (TypeScript Utilities)
-
-The root-level TypeScript is minimal (src/index.ts is a placeholder). To build:
+To target one workspace directly, use `-w`:
 
 ```bash
-npm run build        # Compile TypeScript to dist/
+npm run <script> -w @pt-swipe/web
+npm install <pkg> -w @pt-swipe/web     # add a dependency to a single app
 ```
 
 ## Database Schema

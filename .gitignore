@@ -1,11 +1,14 @@
-/tmp
-/out-tsc
+# Repo-wide ignores. Each app keeps its own .gitignore for framework output.
 
-/node_modules
+node_modules/
+dist/
+*.tsbuildinfo
+
+.env*.local
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/.pnp
-.pnp.js
 
+.DS_Store
 .vscode/*

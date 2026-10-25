@@ -1,9 +1,4 @@
-export type UserProfile = {
-    name: string;
-    age: number;
-    trainingStyle: string;
-    goal: string;
-};
+import type { UserProfile } from "@pt-swipe/shared";
 
 const STORAGE_KEY = "ptswipe_local_profile";
 

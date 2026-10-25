@@ -1,4 +1,4 @@
-import type { UserProfile } from "./localProfile";
+import type { UserProfile } from "./profile";
 
 export type Trainer = {
     id: number;
@@ -66,6 +66,10 @@ export const mockTrainers: Trainer[] = [
         goals: ["Muscle Gain", "Hypertrophy"],
     },
 ];
+
+export function getTrainerById(id: number): Trainer | undefined {
+    return mockTrainers.find((t) => t.id === id);
+}
 
 export type MatchResult = {
     score: number;

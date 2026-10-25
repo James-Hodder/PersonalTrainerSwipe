@@ -1,17 +1,4 @@
-import { mockTrainers, type Trainer } from "./trainers";
-
-export type Match = {
-    trainerId: number;
-    matchScore: number;
-    matchedAt: number;
-};
-
-export type ChatMessage = {
-    id: string;
-    sender: "me" | "trainer";
-    text: string;
-    timestamp: number;
-};
+import type { ChatMessage, Match } from "@pt-swipe/shared";
 
 const MATCHES_KEY = "ptswipe_matches";
 const chatKey = (trainerId: number) => `ptswipe_chat_${trainerId}`;
@@ -110,23 +97,10 @@ export function addMatch(trainer: { id: number; matchScore?: number }) {
     ]);
 }
 
-export function getTrainerById(id: number): Trainer | undefined {
-    return mockTrainers.find((t) => t.id === id);
-}
-
 export function getMessages(trainerId: number): ChatMessage[] {
     return getMessagesSnapshot(trainerId);
 }
 
 export function saveMessages(trainerId: number, messages: ChatMessage[]) {
     write(chatKey(trainerId), messages);
-}
-
-export function createMessage(sender: "me" | "trainer", text: string): ChatMessage {
-    return {
-        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-        sender,
-        text,
-        timestamp: Date.now(),
-    };
 }
