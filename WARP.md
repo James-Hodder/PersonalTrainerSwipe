@@ -26,6 +26,9 @@ Raw TypeScript (no build step) consumed directly by each app's bundler. Contains
 - `profile.ts` - `UserProfile` type
 - `trainers.ts` - `Trainer` type, `mockTrainers`, `getTrainerById`, `computeMatch` scoring
 - `matches.ts` - `Match` / `ChatMessage` types, `createMessage`
+- `training.ts` - training tracking: `Exercise` / `Routine` / `Workout` types, `defaultExercises`,
+  `workoutFromRoutine`, `finishWorkout`, volume / estimated 1RM / `personalBests`, formatting helpers.
+  Weights are kg; `null` in a logged set means "not entered" (distinct from 0)
 
 Rule: nothing in `shared` may touch `window`, the DOM, React Native APIs or storage. Platform-specific
 code (e.g. `localStorage` persistence) stays in the app. Apps import it as `@pt-swipe/shared`; the web
@@ -52,6 +55,10 @@ app lists it in `transpilePackages` in `next.config.ts`.
   - `supabaseClient.ts` - Supabase client initialization
   - `requireAuth.ts` - Server-side auth helper
   - `localProfile.ts`, `matches.ts` - `localStorage` persistence for profile, matches and chats
+  - `training.ts` - `localStorage` stores + React hooks for exercises, routines, workouts and the
+    in-progress workout. Pages only use its hooks/actions, so it's the one file to swap for Supabase
+- `app/training/` - Training tracker: hub, `routines/new` + `routines/[id]` (builder),
+  `workout` (live logger), `exercises` + `exercises/[id]` (library, PBs), `history` + `history/[id]`
 - `public/` - Static assets including pt1.jpg and pt2.jpg for mock trainer profiles
 
 **Authentication Flow:**

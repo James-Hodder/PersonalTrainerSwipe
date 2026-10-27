@@ -72,12 +72,20 @@ export default function SwipePage() {
         <div className="min-h-screen flex flex-col items-center px-4 py-6">
             <header className="w-full max-w-sm flex items-center justify-between mb-4">
                 <h1 className="text-xl font-bold">Hey {profile.name} 👋</h1>
-                <Link
-                    href="/matches"
-                    className="bg-green-500 text-black text-sm font-bold px-4 py-2 rounded-full"
-                >
-                    💬 Matches
-                </Link>
+                <div className="flex gap-2">
+                    <Link
+                        href="/training"
+                        className="bg-white text-black text-sm font-bold px-4 py-2 rounded-full"
+                    >
+                        🏋️ Training
+                    </Link>
+                    <Link
+                        href="/matches"
+                        className="bg-green-500 text-black text-sm font-bold px-4 py-2 rounded-full"
+                    >
+                        💬 Matches
+                    </Link>
+                </div>
             </header>
 
             <div className="flex-1 flex items-center justify-center w-full">

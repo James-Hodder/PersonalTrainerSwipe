@@ -4,3 +4,4 @@
 export * from "./profile";
 export * from "./trainers";
 export * from "./matches";
+export * from "./training";
